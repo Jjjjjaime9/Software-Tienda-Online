@@ -22,13 +22,14 @@ Toda la lógica se centraliza en la capa de servicios `TiendaService`.
 
 ```
 Tienda-Online-A-S/
-├── main.py                  # Punto de entrada: carga datos de ejemplo y simula pedidos
-├── models/
-│   ├── producto.py          # Producto, ProductoElectronico, ProductoRopa
-│   ├── usuario.py           # Usuario, Cliente, Administrador
-│   └── pedido.py            # Pedido
-└── services/
-    └── tienda_service.py    # TiendaService
+└── src/
+    ├── main.py                  # Punto de entrada: carga datos de ejemplo y simula pedidos
+    ├── models/
+    │   ├── producto.py          # Producto, ProductoElectronico, ProductoRopa
+    │   ├── usuario.py           # Usuario, Cliente, Administrador
+    │   └── pedido.py            # Pedido
+    └── services/
+        └── tienda_service.py    # TiendaService
 ```
 
 ## Ejecución
@@ -36,7 +37,7 @@ Tienda-Online-A-S/
 Requiere Python 3.10 o superior (no tiene dependencias externas).
 
 ```bash
-python main.py
+python src/main.py
 ```
 
 ### Con Docker

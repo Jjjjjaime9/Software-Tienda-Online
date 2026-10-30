@@ -8,4 +8,4 @@ ENV PYTHONUNBUFFERED=1 \
 
 COPY . .
 
-CMD ["python", "main.py"]
+CMD ["python", "src/main.py"]
