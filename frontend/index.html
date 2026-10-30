@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tienda Online</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- ======================= CABECERA ======================= -->
+  <header class="cabecera">
+    <div class="cabecera-fila">
+      <a class="marca" href="#" data-ir="tienda">
+        <span class="marca-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M6 7h12l-1.2 11.2a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
+        </span>
+        <span>Tienda<strong>Online</strong></span>
+      </a>
+
+      <nav class="navegacion" aria-label="Secciones">
+        <button class="pestana activa" data-seccion="tienda">Tienda</button>
+        <button class="pestana" data-seccion="pedidos">Mis pedidos</button>
+        <button class="pestana" data-seccion="admin">Administración</button>
+      </nav>
+
+      <div class="cabecera-acciones">
+        <!-- Cliente con el que se compra: solo los clientes pueden hacer pedidos -->
+        <label class="cliente-activo" title="Cliente que realiza las compras">
+          <span class="avatar" id="avatar-cliente" aria-hidden="true">?</span>
+          <select id="cliente-activo" aria-label="Comprando como"></select>
+        </label>
+
+        <button class="icono" id="boton-tema" aria-label="Cambiar tema claro/oscuro">
+          <svg class="solo-claro" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+          <svg class="solo-oscuro" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+
+        <div class="api-ajustes">
+          <button class="icono" id="boton-api" aria-label="Conexión con la API" aria-expanded="false" aria-controls="panel-api">
+            <span id="punto-api" class="punto" aria-hidden="true"></span>
+            <svg viewBox="0 0 24 24"><path d="M5 12a7 7 0 0 1 14 0M8.5 12a3.5 3.5 0 0 1 7 0"/><circle cx="12" cy="16" r="1.5"/></svg>
+          </button>
+          <!-- Dirección de la API: se puede cambiar para usar la de otro equipo -->
+          <form id="form-api" class="panel-api" hidden>
+            <label for="api-url">Dirección de la API</label>
+            <div class="fila-api">
+              <input id="api-url" type="url" required placeholder="http://localhost:8000">
+              <button type="submit">Conectar</button>
+            </div>
+            <p class="estado-api">Estado: <span id="estado-api">sin conectar</span></p>
+            <a id="enlace-docs" href="#" target="_blank" rel="noopener">Abrir documentación (/docs) ↗</a>
+          </form>
+        </div>
+
+        <button class="boton-carrito-cabecera" id="abrir-carrito" aria-label="Abrir carrito">
+          <svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 10.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.5L20.5 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+          <span class="contador" id="contador-carrito" hidden>0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================= TIENDA ======================= -->
+    <section id="tienda" class="seccion">
+      <div class="hero">
+        <div class="hero-texto">
+          <p class="hero-etiqueta">Catálogo en tiempo real</p>
+          <h1>Todo lo que necesitas,<br>en un solo sitio.</h1>
+          <p>Electrónica, ropa y artículos para el día a día. Elige cliente, llena el carrito y haz tu pedido: el stock se actualiza al momento.</p>
+        </div>
+        <dl class="hero-datos">
+          <div><dt>Productos</dt><dd id="hero-productos">—</dd></div>
+          <div><dt>Unidades en stock</dt><dd id="hero-stock">—</dd></div>
+          <div><dt>Desde</dt><dd id="hero-desde">—</dd></div>
+        </dl>
+      </div>
+
+      <div class="barra-filtros">
+        <label class="buscador">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="filtro-texto" type="search" placeholder="Buscar productos por nombre…" aria-label="Buscar productos por nombre">
+        </label>
+        <div class="chips" id="filtro-tipo" role="group" aria-label="Categoría">
+          <button class="chip activo" data-tipo="todos">Todos</button>
+          <button class="chip" data-tipo="electronico">Electrónica</button>
+          <button class="chip" data-tipo="ropa">Ropa</button>
+          <button class="chip" data-tipo="generico">Hogar y otros</button>
+        </div>
+        <div class="filtros-derecha">
+          <label class="interruptor">
+            <input type="checkbox" id="filtro-stock">
+            <span>Solo disponibles</span>
+          </label>
+          <select id="filtro-orden" aria-label="Ordenar">
+            <option value="relevancia">Destacados</option>
+            <option value="precio-asc">Precio: menor a mayor</option>
+            <option value="precio-desc">Precio: mayor a menor</option>
+            <option value="nombre">Nombre (A-Z)</option>
+            <option value="stock">Más stock</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="resultado-filtros" id="resultado-filtros"></p>
+      <div class="rejilla" id="rejilla-productos"></div>
+    </section>
+
+    <!-- ======================= MIS PEDIDOS ======================= -->
+    <section id="pedidos" class="seccion" hidden>
+      <div class="titulo-seccion">
+        <div>
+          <h1>Mis pedidos</h1>
+          <p id="pedidos-subtitulo">Historial del cliente seleccionado.</p>
+        </div>
+        <button class="secundario" id="recargar-pedidos">Actualizar</button>
+      </div>
+      <div class="kpis" id="kpis-cliente"></div>
+      <div id="lista-pedidos" class="lista-pedidos"></div>
+    </section>
+
+    <!-- ======================= ADMINISTRACIÓN ======================= -->
+    <section id="admin" class="seccion" hidden>
+      <div class="titulo-seccion">
+        <div>
+          <h1>Administración</h1>
+          <p>Ventas, inventario y usuarios de la tienda.</p>
+        </div>
+        <nav class="subpestanas" aria-label="Apartados de administración">
+          <button class="subpestana activa" data-apartado="resumen">Resumen</button>
+          <button class="subpestana" data-apartado="inventario">Inventario</button>
+          <button class="subpestana" data-apartado="usuarios">Usuarios</button>
+        </nav>
+      </div>
+
+      <!-- Resumen -->
+      <div class="apartado" id="apartado-resumen">
+        <div class="kpis kpis-admin" id="kpis-admin"></div>
+        <div class="graficos">
+          <div class="panel">
+            <h2>Unidades vendidas por producto</h2>
+            <div class="barras" id="grafico-vendidos"></div>
+          </div>
+          <div class="panel">
+            <h2>Ingresos por cliente</h2>
+            <div class="barras" id="grafico-clientes"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-titulo">
+            <h2>Últimos pedidos</h2>
+            <button class="secundario pequeno" id="recargar-admin">Actualizar</button>
+          </div>
+          <div class="tabla-scroll">
+            <table>
+              <thead><tr><th>Pedido</th><th>Fecha</th><th>Cliente</th><th class="num">Artículos</th><th class="num">Total</th></tr></thead>
+              <tbody id="tabla-ultimos-pedidos"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventario -->
+      <div class="apartado dos-columnas" id="apartado-inventario" hidden>
+        <div class="panel">
+          <h2>Nuevo producto</h2>
+          <form id="form-producto" class="formulario">
+            <label>Tipo
+              <select name="tipo" id="producto-tipo">
+                <option value="generico">Genérico</option>
+                <option value="electronico">Electrónico</option>
+                <option value="ropa">Ropa</option>
+              </select>
+            </label>
+            <label>Nombre <input name="nombre" required minlength="2" maxlength="100"></label>
+            <div class="fila-campos">
+              <label>Precio (€) <input name="precio" type="number" step="0.01" min="0.01" required></label>
+              <label>Stock <input name="stock" type="number" min="0" step="1" required></label>
+            </div>
+            <label class="solo-electronico" hidden>Meses de garantía
+              <input name="meses_garantia" type="number" min="0" max="120" step="1">
+            </label>
+            <div class="fila-campos">
+              <label class="solo-ropa" hidden>Talla <input name="talla" maxlength="10"></label>
+              <label class="solo-ropa" hidden>Color <input name="color" minlength="2" maxlength="30"></label>
+            </div>
+            <label>Foto (opcional)
+              <input name="foto" id="producto-foto" type="file" accept=".jpg,.jpeg,.png,.webp,.avif,.gif,image/*">
+              <small class="ayuda">JPG, PNG, WEBP, AVIF o GIF de hasta 5 MB. Se sube a la carpeta <code>imagenes/</code> de la API.</small>
+            </label>
+            <img id="producto-foto-previa" class="foto-previa" alt="Vista previa de la foto" hidden>
+            <button type="submit" id="crear-producto">Crear producto</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-titulo">
+            <h2>Inventario</h2>
+            <button type="button" class="secundario pequeno" id="recargar-productos">Recargar</button>
+          </div>
+          <div class="tabla-scroll">
+            <table>
+              <thead>
+                <tr><th>Producto</th><th>Tipo</th><th class="num">Precio</th><th class="num">Stock</th><th class="num">Vendidas</th><th></th></tr>
+              </thead>
+              <tbody id="tabla-productos"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usuarios -->
+      <div class="apartado dos-columnas" id="apartado-usuarios" hidden>
+        <div class="panel">
+          <h2>Nuevo usuario</h2>
+          <form id="form-usuario" class="formulario">
+            <label>Tipo
+              <select name="tipo" id="usuario-tipo">
+                <option value="cliente">Cliente</option>
+                <option value="administrador">Administrador</option>
+              </select>
+            </label>
+            <label>Nombre <input name="nombre" required minlength="2" maxlength="80"></label>
+            <label>Email <input name="email" type="email" required></label>
+            <label id="campo-direccion">Dirección <input name="direccion" maxlength="150"></label>
+            <button type="submit">Crear usuario</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-titulo">
+            <h2>Usuarios registrados</h2>
+            <div class="acciones-panel">
+              <label class="buscador pequeno">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input id="buscar-usuarios" type="search" placeholder="Buscar por nombre…" aria-label="Buscar usuarios por nombre">
+              </label>
+              <button type="button" class="secundario pequeno" id="recargar-usuarios">Recargar</button>
+            </div>
+          </div>
+          <p class="resultado-filtros" id="resultado-usuarios" hidden></p>
+          <div class="tabla-scroll">
+            <table>
+              <thead><tr><th>Usuario</th><th>Rol</th><th class="num">Pedidos</th><th class="num">Gastado</th><th>Id</th></tr></thead>
+              <tbody id="tabla-usuarios"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <span>Tienda Online · Práctica de Arquitectura de Software</span>
+    <span>Frontend HTML + JS que solo habla con la API REST por HTTP</span>
+  </footer>
+
+  <!-- ======================= CARRITO (panel lateral) ======================= -->
+  <div class="velo" id="velo-carrito" hidden></div>
+  <aside class="carrito" id="carrito" aria-label="Carrito" aria-hidden="true">
+    <div class="carrito-cabecera">
+      <h2>Tu carrito</h2>
+      <button class="icono" id="cerrar-carrito" aria-label="Cerrar carrito">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="carrito-lineas" id="carrito-lineas"></div>
+    <div class="carrito-pie" id="carrito-pie">
+      <p class="carrito-cliente" id="carrito-cliente"></p>
+      <div class="carrito-total">
+        <span>Total</span>
+        <strong id="carrito-total">0,00 €</strong>
+      </div>
+      <p class="carrito-nota">Envío gratuito · Impuestos incluidos</p>
+      <button id="realizar-pedido" class="ancho">Realizar pedido</button>
+      <button id="vaciar-carrito" class="texto ancho">Vaciar carrito</button>
+    </div>
+  </aside>
+
+  <!-- ======================= DIÁLOGOS ======================= -->
+  <dialog id="dialogo-producto" class="dialogo"></dialog>
+  <dialog id="dialogo-pedido" class="dialogo"></dialog>
+  <dialog id="dialogo-confirmar" class="dialogo pequeno">
+    <form method="dialog">
+      <h2 id="confirmar-titulo">¿Seguro?</h2>
+      <p id="confirmar-texto"></p>
+      <div class="dialogo-acciones">
+        <button value="no" class="secundario">Cancelar</button>
+        <button value="si" class="peligro-lleno">Eliminar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="avisos" id="avisos" aria-live="polite"></div>
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
