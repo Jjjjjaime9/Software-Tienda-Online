@@ -1,4 +1,5 @@
-# Dependencias de la aplicación (versiones fijadas con ==).
-# La versión de consola solo usa la biblioteca estándar de Python,
-# así que de momento no hay paquetes externos que instalar.
-# Ejemplo de formato: requests==2.32.3
+fastapi==0.123.9
+uvicorn==0.38.0
+pydantic==2.12.5
+email-validator==2.3.0
+python-multipart==0.0.20
