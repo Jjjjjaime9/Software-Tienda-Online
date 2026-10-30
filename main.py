@@ -13,40 +13,58 @@ def main() -> None:
 
     cliente1 = servicio.registrar_usuario(
         "cliente",
-        "Clara Montenegro",
-        "clara.montenegro@correofresco.com",
+        "Eladio Dapena",
+        "eladio.dapena@uie.edu",
         direccion="Travesía del Pilar 14, Zaragoza",
     )
     cliente2 = servicio.registrar_usuario(
         "cliente",
-        "Bruno Salaverría",
-        "bruno.salaverria@vientosur.net",
+        "Yayo Rodriguez",
+        "yayo.rodriguez@gmail.com",
         direccion="Rambla de Poblenou 88, Barcelona",
     )
     cliente3 = servicio.registrar_usuario(
         "cliente",
-        "Nadia Ferreiro",
-        "nadia.ferreiro@ondamail.es",
+        "Maria Ecker",
+        "maria.ecker@gmail.com",
         direccion="Cuesta de la Vega 7, Toledo",
     )
+    cliente4 = servicio.registrar_usuario(
+        "cliente",
+        "María del Pilar Rodríguez",
+        "mariapilar.rodriguez@gmail.com",
+        direccion="Calle Real 32, A Coruña",
+    )
     servicio.registrar_usuario(
-        "administrador", "Ignacio Bastos", "ignacio.bastos@tiendacentral.es"
+        "cliente",
+        "Delfina Barrosa",
+        "delfina.barrosa@gmail.com",
+        direccion="Avenida de la Constitución 5, Sevilla",
+    )
+    cliente6 = servicio.registrar_usuario(
+        "cliente",
+        "Guillem Alberti",
+        "guillem.alberti@gmail.com",
+        direccion="Carrer de Sant Miquel 19, Girona",
+    )
+    servicio.registrar_usuario(
+        "administrador", "Jaime Calviño", "jaime.calvino@tiendacentral.es"
     )
 
-    tablet = servicio.agregar_producto(
-        "electronico", "Tablet Nébula 10", 349.50, 12, meses_garantia=18
+    macbook = servicio.agregar_producto(
+        "electronico", "MacBook Neo", 699.95, 15, meses_garantia=18
     )
-    auriculares = servicio.agregar_producto(
-        "electronico", "Auriculares Zenith Pro", 129.90, 40, meses_garantia=6
+    msi = servicio.agregar_producto(
+        "electronico", "Msi, Intel 9, 32 RAM", 1450.50, 12, meses_garantia=6
     )
     sudadera = servicio.agregar_producto(
-        "ropa", "Sudadera Kodiak", 45.50, 25, talla="XL", color="Grafito"
+        "ropa", "Sudadera EMEstudios", 45.50, 25, talla="XL", color="Gris"
     )
-    falda = servicio.agregar_producto(
-        "ropa", "Falda Marlow", 32.75, 18, talla="S", color="Terracota"
+    pantalon = servicio.agregar_producto(
+        "ropa", "Chino Easy Wear", 30.00, 18, talla="42", color="Beige"
     )
-    manual = servicio.agregar_producto(
-        "generico", "Manual de Arquitectura de Software", 28.40, 15
+    mesa = servicio.agregar_producto(
+        "generico", "Mesa de Trabajo", 50.50, 15
     )
 
     print("=== Inventario inicial ===")
@@ -54,21 +72,33 @@ def main() -> None:
         print(producto)
     print()
 
-    print("=== Pedido 1 (Clara) ===")
-    pedido1 = servicio.realizar_pedido(cliente1.id, [(tablet.id, 1), (sudadera.id, 2)])
+    print("=== Pedido 1 (Eladio) ===")
+    pedido1 = servicio.realizar_pedido(cliente1.id, [(macbook.id, 1), (sudadera.id, 2)])
     print(pedido1)
     print()
 
-    print("=== Pedido 2 (Bruno) ===")
-    pedido2 = servicio.realizar_pedido(cliente2.id, [(auriculares.id, 1), (manual.id, 3)])
+    print("=== Pedido 2 (Yayo) ===")
+    pedido2 = servicio.realizar_pedido(cliente2.id, [(msi.id, 1), (mesa.id, 3)])
     print(pedido2)
     print()
 
-    print("=== Pedido 3 (Nadia) ===")
+    print("=== Pedido 3 (Maria) ===")
     pedido3 = servicio.realizar_pedido(
-        cliente3.id, [(falda.id, 1), (sudadera.id, 1), (manual.id, 1)]
+        cliente3.id, [(pantalon.id, 1), (sudadera.id, 1), (mesa.id, 1)]
     )
     print(pedido3)
+    print()
+
+    print("=== Pedido 4 (María del Pilar) ===")
+    pedido4 = servicio.realizar_pedido(cliente4.id, [(macbook.id, 1), (pantalon.id, 2)])
+    print(pedido4)
+    print()
+
+    print("=== Pedido 5 (Guillem) ===")
+    pedido5 = servicio.realizar_pedido(
+        cliente6.id, [(msi.id, 1), (sudadera.id, 1), (mesa.id, 1)]
+    )
+    print(pedido5)
     print()
 
     print("=== Stock actualizado tras los pedidos ===")
