@@ -1,15 +1,18 @@
 """Modelos de producto de la tienda online."""
 import uuid
+from typing import Optional
 
 
 class Producto:
     """Clase base que representa un producto genérico de la tienda."""
 
-    def __init__(self, nombre: str, precio: float, stock: int) -> None:
+    def __init__(self, nombre: str, precio: float, stock: int, imagen: Optional[str] = None) -> None:
         self.id: str = str(uuid.uuid4())
         self.nombre: str = nombre
         self.precio: float = precio
         self.stock: int = stock
+        # Nombre del fichero de la foto dentro de la carpeta imagenes/ (None si no tiene)
+        self.imagen: Optional[str] = imagen
 
     def hay_stock(self, cantidad: int) -> bool:
         """Comprueba si hay stock suficiente para la cantidad solicitada."""
@@ -29,8 +32,10 @@ class Producto:
 class ProductoElectronico(Producto):
     """Producto electrónico, con meses de garantía como atributo adicional."""
 
-    def __init__(self, nombre: str, precio: float, stock: int, meses_garantia: int) -> None:
-        super().__init__(nombre, precio, stock)
+    def __init__(
+        self, nombre: str, precio: float, stock: int, meses_garantia: int, imagen: Optional[str] = None
+    ) -> None:
+        super().__init__(nombre, precio, stock, imagen)
         self.meses_garantia: int = meses_garantia
 
     def __str__(self) -> str:
@@ -40,8 +45,10 @@ class ProductoElectronico(Producto):
 class ProductoRopa(Producto):
     """Producto de ropa, con talla y color como atributos adicionales."""
 
-    def __init__(self, nombre: str, precio: float, stock: int, talla: str, color: str) -> None:
-        super().__init__(nombre, precio, stock)
+    def __init__(
+        self, nombre: str, precio: float, stock: int, talla: str, color: str, imagen: Optional[str] = None
+    ) -> None:
+        super().__init__(nombre, precio, stock, imagen)
         self.talla: str = talla
         self.color: str = color
 
