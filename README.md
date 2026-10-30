@@ -38,3 +38,10 @@ Requiere Python 3.10 o superior (no tiene dependencias externas).
 ```bash
 python main.py
 ```
+
+### Con Docker
+
+```bash
+docker build -t tienda-online -f dockerfile .
+docker run --rm tienda-online
+```
