@@ -13,11 +13,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ ./src/
 
-# Usuario sin privilegios propietario del código
+# Usuario sin privilegios propietario del código (la API escribe en src/imagenes/)
 RUN useradd --create-home --uid 1000 appuser \
     && chown -R appuser:appuser /app \
-    && chmod -R u+rx /app/src
+    && chmod -R u+rwx /app/src
 
 USER appuser
 
-CMD ["python", "src/main.py"]
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--app-dir", "src", "--host", "0.0.0.0", "--port", "8000"]
